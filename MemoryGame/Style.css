@@ -1,0 +1,60 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #FFC0CB;
+    margin: 0;
+    padding: 30px;
+}
+
+.game-board {
+    display: grid;
+    /* 4 columns for 16 cards */
+    grid-template-columns: repeat(4, 100px); 
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.card {
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.5s ease-in-out;
+}
+
+/* This triggers the flip when the 'flipped' class is added via JS */
+.card.flipped {
+    transform: rotateY(180deg);
+}
+
+.card .front, .card .back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden; /* Hides the back of the element */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    font-size: 3rem; /* Size of the emojis */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.card .front {
+    background-color: #DE3163; /* The hidden state (back of the card) */
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>');
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.card .back {
+    background-color: #ecf0f1; 
+    transform: rotateY(180deg);
+}
