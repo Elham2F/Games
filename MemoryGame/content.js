@@ -1,6 +1,6 @@
 // 1. Define your theme here! 
 // You can replace these with anything: animals, flags, or even image URLs.
-const themeItems = ['🍎', '🍌', '🍇', '🍓', '🍉', '🍍', '🥝', '🍒'];
+const themeItems = ['🐪', '🌴', '☕', '🦅', '⛺', '🐎', '🗡️', '🏜️'];
 
 // Duplicate the array to create pairs (16 cards total)
 const cardsArray = [...themeItems, ...themeItems]; 
