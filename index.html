@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Games</title>
+    <style>
+        body {
+            background-color: #FFD1DC; /* Baby Pink Background */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        header {
+            background-color: #FFFFFF; /* White Header */
+            width: 100%;
+            padding: 30px 0;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
+
+        h1 {
+            margin: 0;
+            color: #ff6b9e; /* Darker pink for text readability */
+            font-size: 3rem;
+            letter-spacing: 2px;
+        }
+
+        .games-container {
+            margin-top: 50px;
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* The white box for each game */
+        .game-card {
+            background-color: #FFFFFF;
+            border-radius: 20px;
+            width: 280px;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .game-card:hover {
+            transform: translateY(-8px); /* Slight floating effect on hover */
+        }
+
+        .game-card h2 {
+            color: #444;
+            margin-top: 0;
+            font-size: 1.5rem;
+        }
+
+        .game-card p {
+            color: #777;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        /* The Play Button */
+        .play-btn {
+            background-color: #FFD1DC;
+            color: #333;
+            text-decoration: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.2s;
+            display: inline-block;
+        }
+
+        .play-btn:hover {
+            background-color: #ffb3c6;
+            transform: scale(1.05);
+        }
+        
+        /* A transparent card for future projects */
+        .coming-soon {
+            opacity: 0.6;
+        }
+        
+        .coming-soon .play-btn {
+            background-color: #f0f0f0;
+            color: #aaa;
+            cursor: default;
+        }
+        .coming-soon .play-btn:hover {
+            background-color: #f0f0f0;
+            transform: none;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>My Games</h1>
+    </header>
+
+    <div class="games-container">
+        
+        <!-- Game 1: The Memory Game you built -->
+        <div class="game-card">
+            <h2>Memory Match</h2>
+            <p>A fun, themed memory card game to test your focus.</p>
+            <!-- This exact link path connects to your existing folder -->
+            <a href="MemoryGame/index.html" class="play-btn">Play Now</a>
+        </div>
+
+        <!-- Game 2: Placeholder for a future project -->
+        <div class="game-card coming-soon">
+            <h2>Card Game</h2>
+            <p>A brand new tabletop experience is currently in development!</p>
+            <a href="#" class="play-btn">Coming Soon</a>
+        </div>
+
+    </div>
+
+</body>
+</html>
