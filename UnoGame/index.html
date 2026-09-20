@@ -1,5 +1,36 @@
-<div class="game-card">
-    <h2>أونو السعودية</h2>
-    <p>نسخة محلية من لعبة البطاقات الشهيرة، قيد التطوير!</p>
-    <a href="UnoGame/index.html" class="play-btn">العب الآن</a>
-</div>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أونو السعودية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="game-table">
+        <!-- منطقة اللاعب الثاني (الخصم) بالأعلى -->
+        <div class="player-area" id="opponent-hand">
+            <!-- ستظهر بطاقات الخصم هنا (مقلوبة) عبر الجافاسكربت -->
+        </div>
+
+        <!-- منطقة اللعب في المنتصف (السحبة والورقة المكشوفة) -->
+        <div class="center-area">
+            <div class="deck" id="draw-pile">
+                <span>السحبة</span>
+            </div>
+            <div class="discard-pile" id="active-card">
+                <!-- الورقة التي تم لعبها مؤخراً -->
+            </div>
+        </div>
+
+        <!-- منطقة اللاعب الأول (أنت) بالأسفل -->
+        <div class="player-area" id="my-hand">
+            <!-- ستظهر بطاقاتك هنا عبر الجافاسكربت -->
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
