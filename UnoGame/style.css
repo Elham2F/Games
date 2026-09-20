@@ -84,3 +84,48 @@ body {
     align-items: center;
     transform: rotate(-20deg); /* إمالة النص مثل الأونو الحقيقية */
 }
+/* تصميم نافذة اختيار اللون */
+.modal {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.8); /* خلفية سوداء شفافة */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* عشان تصير فوق كل شيء */
+}
+
+.hidden {
+    display: none !important; /* لإخفاء النافذة وقت اللعب العادي */
+}
+
+.modal-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    color: #333;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.color-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.color-btn {
+    padding: 15px 25px;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    font-family: 'Tajawal', sans-serif;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.color-btn:hover {
+    transform: scale(1.1); /* تكبير الزر شوي لما يمر عليه الماوس */
+}
