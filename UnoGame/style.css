@@ -1,18 +1,86 @@
-const colors = ['أخضر', 'رملي', 'طيني', 'بحري'];
-const values = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'ديور', 'تعدي', '+2'];
-let deck = [];
+body {
+    background-color: #2E3B32; /* لون طاولة لعب أخضر داكن */
+    font-family: 'Tajawal', sans-serif;
+    margin: 0;
+    padding: 0;
+    color: white;
+}
 
-// وظيفة لإنشاء مجموعة الأوراق كاملة
-function buildDeck() {
-    for (let i = 0; i < colors.length; i++) {
-        for (let j = 0; j < values.length; j++) {
-            deck.push({ color: colors[i], value: values[j] });
-            // في الأونو، الأرقام من 1 إلى 9 والأكشن تتكرر مرتين لكل لون
-            if (values[j] !== '0') {
-                deck.push({ color: colors[i], value: values[j] });
-            }
-        }
-    }
-    // إضافة بطاقات تغيير اللون (4 بطاقات) و +4 (4 بطاقات)
-    // ... سيتم إضافتها هنا
+.game-table {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* تصميم مناطق اللاعبين */
+.player-area {
+    display: flex;
+    justify-content: center;
+    gap: -20px; /* تداخل البطاقات قليلاً لتبدو واقعية */
+    min-height: 150px;
+}
+
+/* تصميم منطقة المنتصف */
+.center-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    flex-grow: 1;
+}
+
+/* التصميم الأساسي للبطاقة */
+.card {
+    width: 100px;
+    height: 150px;
+    border-radius: 10px;
+    background-color: white;
+    border: 5px solid white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    transition: transform 0.2s;
+    cursor: pointer;
+    user-select: none;
+}
+
+.card:hover {
+    transform: translateY(-15px); /* رفع البطاقة عند تمرير الماوس */
+}
+
+/* ظهر البطاقة (السحبة وأوراق الخصم) */
+.card-back {
+    background-color: #000;
+    background-image: repeating-linear-gradient(45deg, #333 25%, transparent 25%, transparent 75%, #333 75%, #333), repeating-linear-gradient(45deg, #333 25%, #000 25%, #000 75%, #333 75%, #333);
+    background-position: 0 0, 10px 10px;
+    background-size: 20px 20px;
+    color: #FFD700;
+    text-align: center;
+    font-size: 18px;
+}
+
+/* ألوان الثيم السعودي */
+.color-green { background-color: #006C35; } /* النخيل/العلم */
+.color-sand { background-color: #E6D5B8; color: #333; } /* الرمال */
+.color-mud { background-color: #8B5A2B; } /* الطين النجدي */
+.color-sea { background-color: #006994; } /* البحر الميت/الأحمر */
+.color-black { background-color: #222; } /* بطاقات الأكشن (على كيفي) */
+
+/* الدائرة البيضاء في منتصف أوراق الأونو */
+.card-inner {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    width: 80px;
+    height: 110px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: rotate(-20deg); /* إمالة النص مثل الأونو الحقيقية */
 }
