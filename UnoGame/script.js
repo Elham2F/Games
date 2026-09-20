@@ -107,24 +107,43 @@ function renderGame() {
 function playCard(index) {
     let selectedCard = players.player1[index];
     
-    // قوانين الأونو: لازم نفس اللون، أو نفس الرقم، أو ورقة سوداء
-    if (selectedCard.color === activeCard.color || selectedCard.value === activeCard.value || selectedCard.color === 'أسود') {
+    // 1. إذا كانت الورقة سوداء (على كيفي أو +4)
+    if (selectedCard.color === 'أسود') {
+        // نطلع نافذة تسأل اللاعب عن اللون الجديد
+        let chosenColor = prompt("وش اللون اللي تبيه؟ اكتب واحد من هذي: أخضر، رملي، طيني، بحري");
         
-        // استبدال ورقة المنتصف بالورقة التي اخترتها
+        // نتأكد إن اللاعب كتب اللون بشكل صحيح
+        if (chosenColor === 'أخضر' || chosenColor === 'رملي' || chosenColor === 'طيني' || chosenColor === 'بحري') {
+            // نحدث ورقة المنتصف عشان تاخذ اللون الجديد اللي اختاره اللاعب
+            activeCard = { color: chosenColor, value: selectedCard.value }; 
+            
+            // نحذف الورقة من يدك
+            players.player1.splice(index, 1);
+            
+            renderGame(); // تحديث الطاولة
+            checkWin();
+            
+            // هنا لاحقاً بنخلي الخصم يلعب دوره
+        } else {
+            // لو كتب كلمة غلط
+            alert("الكلمة غير صحيحة أو فيها مسافة زائدة، حاول مرة ثانية واكتب اللون بالضبط!");
+        }
+        return; // نوقف الكود هنا عشان ما يكمل للخطوة اللي تحت
+    }
+
+    // 2. قوانين الأونو العادية لباقي الأوراق الملونة
+    if (selectedCard.color === activeCard.color || selectedCard.value === activeCard.value) {
+        
         activeCard = selectedCard;
-        // حذف الورقة من يدك
         players.player1.splice(index, 1);
         
-        renderGame(); // تحديث الطاولة
-        
+        renderGame(); 
         checkWin();
         
-        // لاحقاً سنضيف هنا برمجة (دور الخصم) ليلعب تلقائياً
     } else {
         alert("ما تقدر تلعب هذي الورقة! لازم نفس اللون أو نفس الرقم.");
     }
 }
-
 // دالة سحب ورقة جديدة
 function drawCard() {
     if(deck.length > 0) {
