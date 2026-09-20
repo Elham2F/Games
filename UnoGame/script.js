@@ -1,5 +1,6 @@
 const colors = ['أخضر', 'رملي', 'طيني', 'بحري'];
-const values = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'اعكس', 'استرِح', '+2'];
+// تم تحديث أسماء بطاقات الأكشن باللهجة السعودية كما اتفقنا
+const values = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'ريوس', 'استريح', '+2'];
 let deck = [];
 
 let players = {
@@ -7,8 +8,8 @@ let players = {
     player2: []
 };
 
-// متغير لحفظ الورقة المكشوفة حالياً في المنتصف
 let activeCard = null; 
+let pendingCardIndex = -1; // لحفظ موقع الورقة السوداء مؤقتاً
 
 const colorClasses = {
     'أخضر': 'color-green',
@@ -49,7 +50,6 @@ function dealCards() {
         players.player2.push(deck.pop());
     }
     
-    // سحب ورقة البداية للمنتصف
     activeCard = deck.pop();
     while(activeCard.color === 'أسود') {
         deck.unshift(activeCard);
@@ -58,7 +58,6 @@ function dealCards() {
 }
 
 function renderGame() {
-    // تنظيف الطاولة قبل إعادة ترتيب الأوراق
     document.getElementById('opponent-hand').innerHTML = '';
     document.getElementById('my-hand').innerHTML = '';
     document.getElementById('active-card').innerHTML = '';
@@ -81,8 +80,6 @@ function renderGame() {
         innerDiv.innerText = card.value;
         
         cardDiv.appendChild(innerDiv);
-        
-        // هنا السر: تفعيل الضغط على بطاقاتك لرميها
         cardDiv.onclick = () => playCard(index);
         
         myHand.appendChild(cardDiv);
@@ -97,58 +94,49 @@ function renderGame() {
     startCardDiv.appendChild(innerStartDiv);
     activeCardArea.appendChild(startCardDiv);
 
-    // تفعيل الضغط على السحبة
     const drawPile = document.getElementById('draw-pile');
     drawPile.className = 'card card-back';
     drawPile.onclick = drawCard;
 }
 
-// دالة التحقق ورمي الورقة
+// دالة اللعب الأساسية (مع دعم أزرار الألوان للبطاقات السوداء)
 function playCard(index) {
     let selectedCard = players.player1[index];
     
-    // 1. إذا كانت الورقة سوداء (على كيفي أو +4)
     if (selectedCard.color === 'أسود') {
-        // نطلع نافذة تسأل اللاعب عن اللون الجديد
-        let chosenColor = prompt("وش اللون اللي تبيه؟ اكتب واحد من هذي: أخضر، رملي، طيني، بحري");
-        
-        // نتأكد إن اللاعب كتب اللون بشكل صحيح
-        if (chosenColor === 'أخضر' || chosenColor === 'رملي' || chosenColor === 'طيني' || chosenColor === 'بحري') {
-            // نحدث ورقة المنتصف عشان تاخذ اللون الجديد اللي اختاره اللاعب
-            activeCard = { color: chosenColor, value: selectedCard.value }; 
-            
-            // نحذف الورقة من يدك
-            players.player1.splice(index, 1);
-            
-            renderGame(); // تحديث الطاولة
-            checkWin();
-            
-            // هنا لاحقاً بنخلي الخصم يلعب دوره
-        } else {
-            // لو كتب كلمة غلط
-            alert("الكلمة غير صحيحة أو فيها مسافة زائدة، حاول مرة ثانية واكتب اللون بالضبط!");
-        }
-        return; // نوقف الكود هنا عشان ما يكمل للخطوة اللي تحت
+        pendingCardIndex = index; 
+        document.getElementById('color-picker-modal').classList.remove('hidden'); // إظهار نافذة الأزرار
+        return; 
     }
 
-    // 2. قوانين الأونو العادية لباقي الأوراق الملونة
     if (selectedCard.color === activeCard.color || selectedCard.value === activeCard.value) {
-        
         activeCard = selectedCard;
         players.player1.splice(index, 1);
-        
         renderGame(); 
         checkWin();
-        
     } else {
         alert("ما تقدر تلعب هذي الورقة! لازم نفس اللون أو نفس الرقم.");
     }
 }
-// دالة سحب ورقة جديدة
+
+// دالة اختيار اللون عبر الأزرار
+function selectColor(chosenColor) {
+    let selectedCard = players.player1[pendingCardIndex];
+    
+    activeCard = { color: chosenColor, value: selectedCard.value }; 
+    players.player1.splice(pendingCardIndex, 1);
+    
+    document.getElementById('color-picker-modal').classList.add('hidden'); // إخفاء نافذة الأزرار
+    pendingCardIndex = -1;
+    
+    renderGame(); 
+    checkWin();
+}
+
 function drawCard() {
     if(deck.length > 0) {
         players.player1.push(deck.pop());
-        renderGame(); // تحديث الطاولة لظهور الورقة الجديدة في يدك
+        renderGame();
     }
 }
 
