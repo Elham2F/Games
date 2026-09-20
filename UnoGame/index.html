@@ -30,6 +30,19 @@
             <!-- ستظهر بطاقاتك هنا عبر الجافاسكربت -->
         </div>
     </div>
+    <!-- نافذة اختيار اللون (مخفية افتراضياً) -->
+    <div id="color-picker-modal" class="modal hidden">
+        <div class="modal-content">
+            <h3>اختر اللون الجديد:</h3>
+            <div class="color-buttons">
+                <!-- أزرار الألوان مربوطة بالدالة البرمجية -->
+                <button class="color-btn color-green" onclick="selectColor('أخضر')">أخضر</button>
+                <button class="color-btn color-sand" onclick="selectColor('رملي')">رملي</button>
+                <button class="color-btn color-mud" onclick="selectColor('طيني')">طيني</button>
+                <button class="color-btn color-sea" onclick="selectColor('بحري')">بحري</button>
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
