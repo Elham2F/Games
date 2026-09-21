@@ -219,3 +219,47 @@ body {
     scroll-snap-align: center;
     flex-shrink: 0;
 }
+/* حاوية أوراق اللاعب في الأسفل */
+.player-hand, .hand {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    padding: 20px 10px;
+    /* دعم التمرير السلس على الجوال والأجهزة الذكية */
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* تنسيق الكرت الأساسي مع التداخل */
+.card {
+    position: relative;
+    width: 70px;
+    height: 105px;
+    border-radius: 10px;
+    border: 2px solid #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    
+    /* التداخل بين الكروت */
+    margin-left: -28px; 
+    
+    /* انتقال حركي ناعم للرفع */
+    transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1), z-index 0.2s ease, box-shadow 0.25s ease;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    z-index: 1;
+}
+
+/* إلغاء التداخل للكرت الأول من اليمين/اليسار */
+.card:first-child {
+    margin-left: 0;
+}
+
+/* تأثير ارتفـاع الكرت لأعلى عند مرور الماوس أو اللمس في الآيفون */
+.card:hover,
+.card:active,
+.card.selected {
+    transform: translateY(-25px) scale(1.08); /* يرتفع لأعلى 25px ويكبر بنسبة بسيطة */
+    z-index: 50 !important; /* يضمن بروزه فوق الأوراق المجاورة */
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.6), 0 0 12px rgba(212, 175, 55, 0.8); /* ظل ذهبي متوهج */
+}
