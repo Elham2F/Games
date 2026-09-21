@@ -4,12 +4,12 @@ let deck = [];
 
 let players = {
     player1: [], // أوراقك
-    player2: []  // أوراق الخصم
+    player2: []  // الخصم
 };
 
 let activeCard = null; 
 let pendingCardIndex = -1;
-let isMyTurn = true; // تحديد دور مَن للعب
+let isMyTurn = true;
 
 const colorClasses = {
     'أخضر': 'color-green',
@@ -51,9 +51,20 @@ function dealCards() {
     }
     
     activeCard = deck.pop();
-    while(activeCard.color === 'أسود') {
+    while(activeCard.color === 'أسود' || activeCard.value === '+2' || activeCard.value === 'استريح' || activeCard.value === 'ريوس') {
         deck.unshift(activeCard);
         activeCard = deck.pop();
+    }
+}
+
+function updateTurnIndicator() {
+    const turnText = document.getElementById('turn-text');
+    if (isMyTurn) {
+        turnText.innerText = "🔽 دورك الآن (أسفل)";
+        turnText.style.color = "#4CAF50";
+    } else {
+        turnText.innerText = "🔼 دور الخصم (أعلى)";
+        turnText.style.color = "#FF9800";
     }
 }
 
@@ -63,7 +74,7 @@ function renderGame() {
     document.getElementById('active-card').innerHTML = '';
 
     const opponentHand = document.getElementById('opponent-hand');
-    players.player2.forEach(card => {
+    players.player2.forEach(() => {
         let cardDiv = document.createElement('div');
         cardDiv.className = 'card card-back';
         cardDiv.innerText = 'أونو';
@@ -97,29 +108,40 @@ function renderGame() {
     const drawPile = document.getElementById('draw-pile');
     drawPile.className = 'card card-back';
     drawPile.onclick = drawCard;
+
+    updateTurnIndicator();
 }
 
 function playCard(index) {
-    if (!isMyTurn) return; // منعك من اللعب إذا كان دور الخصم
+    if (!isMyTurn) return;
 
     let selectedCard = players.player1[index];
     
+    // التعامل مع البطاقات السوداء (على كيفي / +4)
     if (selectedCard.color === 'أسود') {
         pendingCardIndex = index; 
         document.getElementById('color-picker-modal').classList.remove('hidden'); 
         return; 
     }
 
+    // القوانين العادية
     if (selectedCard.color === activeCard.color || selectedCard.value === activeCard.value) {
         activeCard = selectedCard;
         players.player1.splice(index, 1);
-        renderGame(); 
         
+        // تطبيق تأثير أوراق الأكشن
+        let keepTurn = handleActionCardEffect(selectedCard, 'player2');
+        
+        renderGame(); 
         if (checkWin()) return;
 
-        // انتقال الدور للخصم
-        isMyTurn = false;
-        setTimeout(botTurn, 1000); // الخصم يفكر ويلعب بعد ثانية واحدة
+        if (!keepTurn) {
+            isMyTurn = false;
+            updateTurnIndicator();
+            setTimeout(botTurn, 1200);
+        } else {
+            updateTurnIndicator(); // يبقى الدور عندك
+        }
     } else {
         alert("ما تقدر تلعب هذي الورقة! لازم نفس اللون أو نفس الرقم.");
     }
@@ -134,28 +156,57 @@ function selectColor(chosenColor) {
     document.getElementById('color-picker-modal').classList.add('hidden'); 
     pendingCardIndex = -1;
     
+    // تنفيذ تأثير +4 إذا كانت الورقة السوداء هي +4
+    let keepTurn = false;
+    if (selectedCard.value === '+4') {
+        drawCardsForTarget('player2', 4);
+        keepTurn = true; // تخطي دور الخصم بعد السحب
+    }
+
     renderGame(); 
     if (checkWin()) return;
 
-    // انتقال الدور للخصم
-    isMyTurn = false;
-    setTimeout(botTurn, 1000);
+    if (!keepTurn) {
+        isMyTurn = false;
+        updateTurnIndicator();
+        setTimeout(botTurn, 1200);
+    } else {
+        updateTurnIndicator();
+    }
+}
+
+// دالة لمعالجة أوامر الأكشن (+2, استريح, ريوس)
+function handleActionCardEffect(card, targetPlayerKey) {
+    if (card.value === '+2') {
+        drawCardsForTarget(targetPlayerKey, 2);
+        return true; // الاحتفاظ بالدور (تخطي الخصم بعد السحب)
+    } else if (card.value === 'استريح' || card.value === 'ريوس') {
+        return true; // تخطي الخصم وإبقاء الدور
+    }
+    return false;
+}
+
+function drawCardsForTarget(playerKey, count) {
+    for (let i = 0; i < count; i++) {
+        if (deck.length > 0) {
+            players[playerKey].push(deck.pop());
+        }
+    }
 }
 
 function drawCard() {
     if (!isMyTurn) return;
 
-    if(deck.length > 0) {
+    if (deck.length > 0) {
         players.player1.push(deck.pop());
         renderGame();
         
-        // بعد السحب ينتقل الدور للخصم
         isMyTurn = false;
-        setTimeout(botTurn, 1000);
+        updateTurnIndicator();
+        setTimeout(botTurn, 1200);
     }
 }
 
-// ذكاء اصطناعي لبوت الخصم
 function botTurn() {
     let validCardIndex = players.player2.findIndex(card => 
         card.color === activeCard.color || 
@@ -165,27 +216,39 @@ function botTurn() {
 
     if (validCardIndex !== -1) {
         let cardToPlay = players.player2[validCardIndex];
+        let keepTurn = false;
 
         if (cardToPlay.color === 'أسود') {
-            // البوت يختار اللون الأكثر توفراً في يده
             let randomColor = colors[Math.floor(Math.random() * colors.length)];
             activeCard = { color: randomColor, value: cardToPlay.value };
+            
+            if (cardToPlay.value === '+4') {
+                drawCardsForTarget('player1', 4);
+                keepTurn = true;
+            }
         } else {
             activeCard = cardToPlay;
+            keepTurn = handleActionCardEffect(cardToPlay, 'player1');
         }
 
         players.player2.splice(validCardIndex, 1);
+        renderGame();
+
+        if (checkWin()) return;
+
+        if (keepTurn) {
+            setTimeout(botTurn, 1200); // يلعب البوت مرة أخرى فوراً
+        } else {
+            isMyTurn = true;
+            updateTurnIndicator();
+        }
     } else {
-        // إذا لم يجد ورقة، يسحب ورقة من الكوم
         if (deck.length > 0) {
             players.player2.push(deck.pop());
         }
-    }
-
-    renderGame();
-
-    if (!checkWin()) {
-        isMyTurn = true; // إعادة الدور لكِ
+        renderGame();
+        isMyTurn = true;
+        updateTurnIndicator();
     }
 }
 
@@ -194,7 +257,7 @@ function checkWin() {
         alert("مبروك! فزت في اللعبة! 🎉");
         return true;
     } else if (players.player2.length === 0) {
-        alert("للأسف فاز الخصم! حظاً أوفر في المرة القادمة. 🤖");
+        alert("للأسف فاز الخصم! 🤖");
         return true;
     }
     return false;
