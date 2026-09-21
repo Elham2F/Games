@@ -142,12 +142,15 @@ body {
     border: 2px solid #FFD700;
     box-shadow: 0 2px 6px rgba(0,0,0,0.3);
 }
-/* ظهر البطاقة  */
+/* ظهر البطاقة - الغلاف */
 .card-back {
-    background-image: url('SaudiUNOCover.jpg');
-    background-size: 100% 100%;       /* تغطية أبعاد البطاقة بالكامل */
-    background-position: center;
-    background-repeat: no-repeat;
-    border: 2px solid #D4AF37;         /* إطار ذهبي ناعم يناسب زخارف الصورة */
-    color: transparent !important;     /* إخفاء أي نص قديم فوق الغلاف */
+    background-image: url('SaudiUNOCover.jpg') !important;
+    background-size: 100% 100% !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-color: #0B3B17; /* لون زيتي احتياطي في حال عدم تحميل الصورة */
+    border: 2px solid #D4AF37 !important;
+    color: transparent !important;
+    width: 90px;  /* تحديد العرض لضمان ظهور الصورة */
+    height: 130px; /* تحديد الارتفاع لضمان ظهور الصورة */
 }
