@@ -145,4 +145,43 @@ body {
     font-weight: bold;
     color: white;
     cursor: pointer;
+}/* تنسيق نافذة الفوز والخسارة المنبثقة */
+.result-content {
+    background: #0d1b2a;
+    border: 2px solid #D4AF37;
+    border-radius: 15px;
+    padding: 30px;
+    text-align: center;
+    color: white;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8);
+    max-width: 350px;
+    width: 80%;
+}
+
+.result-content h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.result-content p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    color: #e0e1dd;
+}
+
+.play-again-btn {
+    background-color: #D4AF37;
+    color: #0d1b2a;
+    border: none;
+    padding: 12px 25px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.play-again-btn:hover {
+    transform: scale(1.05);
+    background-color: #f4c430;
 }
