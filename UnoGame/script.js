@@ -248,14 +248,31 @@ function botTurn() {
 }
 
 function checkWin() {
+    const resultModal = document.getElementById('result-modal');
+    const resultTitle = document.getElementById('result-title');
+    const resultMessage = document.getElementById('result-message');
+
     if (players.player1.length === 0) {
-        alert("مبروك! فزت في اللعبة! 🎉");
+        resultTitle.innerText = "🎉 مبروك الفوز!";
+        resultTitle.style.color = "#4CAF50";
+        resultMessage.innerText = "كفو! أسطورة سحبة!";
+        resultModal.classList.remove('hidden');
         return true;
     } else if (players.player2.length === 0) {
-        alert("للأسف فاز الخصم! 🤖");
+        resultTitle.innerText = "🤖 هاردلك الخسارة!";
+        resultTitle.style.color = "#e63946";
+        resultMessage.innerText = "فاز الخصم هذه المرة، جرب مرة ثانية!";
+        resultModal.classList.remove('hidden');
         return true;
     }
     return false;
+}
+
+function restartGame() {
+    document.getElementById('result-modal').classList.add('hidden');
+    players = { player1: [], player2: [] };
+    isMyTurn = true;
+    startGame();
 }
 
 function startGame() {
