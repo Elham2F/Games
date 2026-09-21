@@ -3,8 +3,8 @@ const values = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'ريوس', '�
 let deck = [];
 
 let players = {
-    player1: [], // أوراقك
-    player2: []  // الخصم
+    player1: [],
+    player2: []
 };
 
 let activeCard = null; 
@@ -117,19 +117,16 @@ function playCard(index) {
 
     let selectedCard = players.player1[index];
     
-    // التعامل مع البطاقات السوداء (على كيفي / +4)
     if (selectedCard.color === 'أسود') {
         pendingCardIndex = index; 
         document.getElementById('color-picker-modal').classList.remove('hidden'); 
         return; 
     }
 
-    // القوانين العادية
     if (selectedCard.color === activeCard.color || selectedCard.value === activeCard.value) {
         activeCard = selectedCard;
         players.player1.splice(index, 1);
         
-        // تطبيق تأثير أوراق الأكشن
         let keepTurn = handleActionCardEffect(selectedCard, 'player2');
         
         renderGame(); 
@@ -140,7 +137,7 @@ function playCard(index) {
             updateTurnIndicator();
             setTimeout(botTurn, 1200);
         } else {
-            updateTurnIndicator(); // يبقى الدور عندك
+            updateTurnIndicator();
         }
     } else {
         alert("ما تقدر تلعب هذي الورقة! لازم نفس اللون أو نفس الرقم.");
@@ -156,11 +153,10 @@ function selectColor(chosenColor) {
     document.getElementById('color-picker-modal').classList.add('hidden'); 
     pendingCardIndex = -1;
     
-    // تنفيذ تأثير +4 إذا كانت الورقة السوداء هي +4
     let keepTurn = false;
     if (selectedCard.value === '+4') {
         drawCardsForTarget('player2', 4);
-        keepTurn = true; // تخطي دور الخصم بعد السحب
+        keepTurn = true;
     }
 
     renderGame(); 
@@ -175,13 +171,12 @@ function selectColor(chosenColor) {
     }
 }
 
-// دالة لمعالجة أوامر الأكشن (+2, استريح, ريوس)
 function handleActionCardEffect(card, targetPlayerKey) {
     if (card.value === '+2') {
         drawCardsForTarget(targetPlayerKey, 2);
-        return true; // الاحتفاظ بالدور (تخطي الخصم بعد السحب)
+        return true;
     } else if (card.value === 'استريح' || card.value === 'ريوس') {
-        return true; // تخطي الخصم وإبقاء الدور
+        return true;
     }
     return false;
 }
@@ -237,7 +232,7 @@ function botTurn() {
         if (checkWin()) return;
 
         if (keepTurn) {
-            setTimeout(botTurn, 1200); // يلعب البوت مرة أخرى فوراً
+            setTimeout(botTurn, 1200);
         } else {
             isMyTurn = true;
             updateTurnIndicator();
