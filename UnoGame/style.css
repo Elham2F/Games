@@ -185,3 +185,28 @@ body {
     transform: scale(1.05);
     background-color: #f4c430;
 }
+/* رسالة التنبيه المنبثقة الناعمة (Toast) */
+.toast {
+    position: fixed;
+    top: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(230, 57, 70, 0.95);
+    color: white;
+    padding: 10px 22px;
+    border-radius: 25px;
+    border: 1px solid #D4AF37;
+    font-size: 1rem;
+    font-weight: bold;
+    z-index: 9999;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+}
+
+.toast.hidden {
+    opacity: 0;
+    transform: translate(-50%, -20px);
+    display: block !important; /* للحفاظ على سلاسة الأنيمايشن */
+    visibility: hidden;
+}
