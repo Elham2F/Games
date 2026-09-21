@@ -144,7 +144,7 @@ body {
 }
 /* ظهر البطاقة - الغلاف */
 .card-back {
-    background-image: url('./SaudiUNOCover.jpg') !important;
+    background-image: url('https://github.com/Elham2F/Games/blob/main/UnoGame/SaudiUNOCover.jpg') !important;
     background-size: 100% 100% !important;
     background-position: center !important;
     background-repeat: no-repeat !important;
