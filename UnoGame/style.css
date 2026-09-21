@@ -1,103 +1,127 @@
 body {
-    background-color: #2E3B32; /* لون طاولة لعب أخضر داكن */
-    font-family: 'Tajawal', sans-serif;
     margin: 0;
     padding: 0;
+    font-family: 'Tajawal', sans-serif;
+    background-color: #1a3323;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
     color: white;
+}
+
+/* زر الرئيسية */
+.home-btn {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    font-size: 24px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 2px solid #D4AF37;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    cursor: pointer;
+    z-index: 1000;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.home-btn:hover {
+    transform: scale(1.1);
+    background-color: rgba(212, 175, 55, 0.3);
 }
 
 .game-table {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 100vh;
-    padding: 20px;
-    box-sizing: border-box;
+    height: 90vh;
+    width: 90%;
+    max-width: 800px;
 }
 
-/* تصميم مناطق اللاعبين */
 .player-area {
     display: flex;
     justify-content: center;
-    gap: -20px; /* تداخل البطاقات قليلاً لتبدو واقعية */
-    min-height: 150px;
+    gap: 10px;
+    min-height: 140px;
+    flex-wrap: wrap;
 }
 
-/* تصميم منطقة المنتصف */
 .center-area {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 40px;
-    flex-grow: 1;
+    gap: 30px;
 }
 
-/* التصميم الأساسي للبطاقة */
+.turn-indicator {
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #FFD700;
+    margin: 5px auto;
+    border: 2px solid #FFD700;
+}
+
 .card {
-    width: 100px;
-    height: 150px;
+    width: 90px;
+    height: 130px;
     border-radius: 10px;
-    background-color: white;
-    border: 5px solid white;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 24px;
-    font-weight: bold;
-    color: white;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-    transition: transform 0.2s;
     cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     user-select: none;
 }
 
-.card:hover {
-    transform: translateY(-15px); /* رفع البطاقة عند تمرير الماوس */
-}
-
-/* ظهر البطاقة (السحبة وأوراق الخصم) */
+/* ظهر البطاقات */
 .card-back {
-    background-color: #000;
-    background-image: repeating-linear-gradient(45deg, #333 25%, transparent 25%, transparent 75%, #333 75%, #333), repeating-linear-gradient(45deg, #333 25%, #000 25%, #000 75%, #333 75%, #333);
-    background-position: 0 0, 10px 10px;
-    background-size: 20px 20px;
-    color: #FFD700;
-    text-align: center;
-    font-size: 18px;
+    background-image: url('SaudiUNOCover.jpg') !important;
+    background-size: 100% 100% !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    border: 2px solid #D4AF37 !important;
+    color: transparent !important;
 }
 
-/* ألوان الثيم السعودي */
-.color-green { background-color: #006C35; } /* النخيل/العلم */
-.color-sand { background-color: #E6D5B8; color: #333; } /* الرمال */
-.color-mud { background-color: #8B5A2B; } /* الطين النجدي */
-.color-sea { background-color: #006994; } /* البحر الميت/الأحمر */
-.color-black { background-color: #222; } /* بطاقات الأكشن (على كيفي) */
-
-/* الدائرة البيضاء في منتصف أوراق الأونو */
 .card-inner {
-    background-color: rgba(255, 255, 255, 0.2);
-    border-radius: 50%;
-    width: 80px;
-    height: 110px;
+    width: 70px;
+    height: 105px;
+    border: 2px solid white;
+    border-radius: 8px;
     display: flex;
     justify-content: center;
     align-items: center;
-    transform: rotate(-20deg); /* إمالة النص مثل الأونو الحقيقية */
+    font-size: 20px;
+    font-weight: bold;
 }
-/* تصميم نافذة اختيار اللون */
+
+.color-green { background-color: #2e7d32; }
+.color-sand { background-color: #d4a373; }
+.color-mud { background-color: #8d5b4c; }
+.color-sea { background-color: #0288d1; }
+.color-black { background-color: #212121; }
+
 .modal {
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
-    background-color: rgba(0,0,0,0.8); /* خلفية سوداء شفافة */
+    background-color: rgba(0,0,0,0.8);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000; /* عشان تصير فوق كل شيء */
+    z-index: 1000;
 }
 
-.hidden {
-    display: none !important; /* لإخفاء النافذة وقت اللعب العادي */
-}
+.hidden { display: none !important; }
 
 .modal-content {
     background-color: white;
@@ -105,7 +129,6 @@ body {
     border-radius: 15px;
     text-align: center;
     color: #333;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
 .color-buttons {
@@ -119,35 +142,7 @@ body {
     border: none;
     border-radius: 10px;
     font-size: 18px;
-    font-family: 'Tajawal', sans-serif;
     font-weight: bold;
     color: white;
     cursor: pointer;
-    transition: transform 0.2s;
-}
-
-.color-btn:hover {
-    transform: scale(1.1); /* تكبير الزر شوي لما يمر عليه الماوس */
-}
-/* مؤشر اتجاه الدور */
-.turn-indicator {
-    text-align: center;
-    background-color: rgba(0, 0, 0, 0.4);
-    padding: 8px 20px;
-    border-radius: 20px;
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #FFD700;
-    margin: 5px auto;
-    border: 2px solid #FFD700;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-}
-/* ظهر البطاقة - الغلاف */
-.card-back {
-    background-image: url('SaudiUNOCover.jpg');
-    background-size: 100% 100%;       /* تغطية أبعاد البطاقة بالكامل */
-    background-position: center;
-    background-repeat: no-repeat;
-    border: 2px solid #D4AF37;         /* إطار ذهبي ناعم يناسب زخارف الصورة */
-    color: transparent !important;     /* إخفاء أي نص قديم فوق الغلاف */
 }
