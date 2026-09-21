@@ -77,7 +77,7 @@ function renderGame() {
     players.player2.forEach(() => {
         let cardDiv = document.createElement('div');
         cardDiv.className = 'card card-back';
-        cardDiv.innerText = 'أونو';
+        cardDiv.innerText = '';
         opponentHand.appendChild(cardDiv);
     });
 
