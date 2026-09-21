@@ -2,77 +2,53 @@ body {
     margin: 0;
     padding: 20px;
     font-family: 'Tajawal', sans-serif;
-    background-color: #1b263b;
+    background-color: #1a3323;
     color: white;
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-/* زر الرئيسية */
-.home-btn {
-    position: fixed;
-    top: 15px;
-    right: 15px;
-    font-size: 24px;
-    background-color: rgba(0, 0, 0, 0.5);
-    border: 2px solid #D4AF37;
-    border-radius: 50%;
-    width: 45px;
-    height: 45px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-decoration: none;
-    cursor: pointer;
-    z-index: 1000;
-    transition: transform 0.2s, background-color 0.2s;
-}
-
-.home-btn:hover {
-    transform: scale(1.1);
-    background-color: rgba(212, 175, 55, 0.3);
+    min-height: 100vh;
 }
 
 #status {
     font-size: 1.2rem;
     margin-bottom: 20px;
-    color: #e0e1dd;
+    color: #FFD700;
 }
 
-.board {
+.memory-grid {
     display: grid;
-    grid-template-columns: repeat(10, 50px);
-    grid-template-rows: repeat(10, 50px);
-    gap: 5px;
-    background-color: #0d1b2a;
-    padding: 10px;
-    border-radius: 10px;
+    grid-template-columns: repeat(4, 80px);
+    gap: 15px;
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    border-radius: 15px;
     border: 2px solid #D4AF37;
 }
 
-.cell {
-    width: 50px;
-    height: 50px;
-    background-color: #415a77;
-    border-radius: 5px;
+.card {
+    width: 80px;
+    height: 110px;
+    background-color: #2e7d32;
+    border: 2px solid #D4AF37;
+    border-radius: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-weight: bold;
+    font-size: 2rem;
     cursor: pointer;
     user-select: none;
+    transition: transform 0.3s;
 }
 
-.cell.player {
-    background-color: #e63946; /* لون فيشة اللاعب */
+.card.flipped {
+    background-color: #fff;
+    color: #000;
+    transform: rotateY(180deg);
 }
 
-.cell.bot {
-    background-color: #457b9d; /* لون فيشة البوت */
-}
-
-.cell.corner {
+.card.matched {
     background-color: #d4af37;
-    color: black;
+    cursor: default;
+    visibility: hidden;
 }
