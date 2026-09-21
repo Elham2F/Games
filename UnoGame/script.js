@@ -283,4 +283,8 @@ function startGame() {
 }
 
 startGame();
-
+// أضيفي هذا السطر عند إنشاء عنصر الكرت لضمان استجابة اللمس في الآيفون
+card.addEventListener('touchstart', function() {
+    document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
+    this.classList.add('selected');
+}, { passive: true });
