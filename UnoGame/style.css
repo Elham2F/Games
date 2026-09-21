@@ -185,3 +185,26 @@ body {
     transform: scale(1.05);
     background-color: #f4c430;
 }
+.home-btn {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    font-size: 24px;
+    background-color: rgba(0, 0, 0, 0.6);
+    border: 2px solid #D4AF37;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    cursor: pointer;
+    z-index: 9999 !important; /* لضمان ظهور الزر واستجابته للنقر فوق ساحة اللعب */
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.home-btn:hover {
+    transform: scale(1.1);
+    background-color: rgba(212, 175, 55, 0.4);
+}
