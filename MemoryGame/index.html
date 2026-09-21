@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Saffih صفّها </title>
+    <title>Saffih صفّها - لعبة الذاكرة</title>
     <!-- استدعاء خط "تجوال" ذو الطابع السعودي الحديث -->
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@500;700&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="Style.css">
 </head>
@@ -14,7 +14,28 @@
     <a href="../index.html" class="home-btn" title="الرئيسية">🏠</a>
     
     <h1 style="color:#006C35;">Saffih صفّها</h1>
+
+    <!-- شريط الوقت وأفضل رقم قياسي -->
+    <div class="stats-bar">
+        <div>⏱️ الوقت: <span id="timer">0</span> ثانية</div>
+        <div>🏆 أفضل رقم: <span id="best-record">--</span></div>
+    </div>
+
+    <!-- لوحة اللعبة -->
     <div class="game-board" id="game-board"></div>
+
+    <!-- النافذة المنبثقة عند الفوز -->
+    <div id="win-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2>🎉 Whoo! You finished the game!</h2>
+            <p id="win-time-text"></p>
+
+            <div class="modal-buttons">
+                <button class="action-btn" onclick="initGame()">العب مرة أخرى 🔄</button>
+                <a href="../index.html" class="action-btn secondary">الرئيسية 🏠</a>
+            </div>
+        </div>
+    </div>
 
     <script src="content.js"></script>
 </body>
