@@ -1,19 +1,26 @@
-// 1. Define your theme here! 
-// You can replace these with anything: animals, flags, or even image URLs.
+// 1. العناصر والرموز
 const themeItems = ['🐪', '🌴', '☕', '🦅', '⛺', '🐎', '🗡️', '🏜️'];
-
-// Duplicate the array to create pairs (16 cards total)
 const cardsArray = [...themeItems, ...themeItems]; 
 
-// Game State variables
+// متغيّرات حالة اللعبة
 let firstCard = null;
 let secondCard = null;
-let lockBoard = false; // Prevents clicking while cards are flipping back
+let lockBoard = false; 
 let matchedPairs = 0;
 
-const gameBoard = document.getElementById('game-board');
+// متغيّرات المؤقت والنتيجة
+let timerInterval = null;
+let seconds = 0;
+let gameStarted = false;
 
-// Shuffle function (Fisher-Yates Algorithm)
+// استدعاء عناصر HTML
+const gameBoard = document.getElementById('game-board');
+const timerElement = document.getElementById('timer');
+const bestRecordElement = document.getElementById('best-record');
+const winModal = document.getElementById('win-modal');
+const winTimeText = document.getElementById('win-time-text');
+
+// خلط الكروت (Fisher-Yates Algorithm)
 function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -22,29 +29,58 @@ function shuffle(array) {
     return array;
 }
 
-// Initialize the game
+// عرض أفضل رقم قياسي مخزن
+function loadBestRecord() {
+    let bestRecord = localStorage.getItem('saffih_best_record');
+    if (bestRecordElement) {
+        bestRecordElement.innerText = bestRecord ? `${bestRecord} ثانية` : '--';
+    }
+}
+
+// بدء المؤقت
+function startTimer() {
+    seconds = 0;
+    if (timerElement) timerElement.innerText = seconds;
+    clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
+        seconds++;
+        if (timerElement) timerElement.innerText = seconds;
+    }, 1000);
+}
+
+// إيقاف المؤقت
+function stopTimer() {
+    clearInterval(timerInterval);
+}
+
+// تهيئة وإعادة تشغيل اللعبة
 function initGame() {
+    // إخفاء نافذة الفوز إذا كانت مفتوحة
+    if (winModal) winModal.classList.add('hidden');
+
     gameBoard.innerHTML = '';
     matchedPairs = 0;
+    gameStarted = false;
+    stopTimer();
+    
+    if (timerElement) timerElement.innerText = '0';
+    loadBestRecord();
+    resetBoard();
 
-    const shuffledCards = shuffle(cardsArray);
+    const shuffledCards = shuffle([...cardsArray]);
 
     shuffledCards.forEach(item => {
-        // Create card container
         const card = document.createElement('div');
         card.classList.add('card');
-        card.dataset.name = item; // Store the item name to check for matches
+        card.dataset.name = item;
 
-        // Create front face (hidden side)
         const front = document.createElement('div');
         front.classList.add('front');
 
-        // Create back face (revealed side)
         const back = document.createElement('div');
         back.classList.add('back');
-        back.innerText = item; // Add the emoji to the card
+        back.innerText = item;
 
-        // Append faces to card, and card to board
         card.appendChild(front);
         card.appendChild(back);
         card.addEventListener('click', flipCard);
@@ -53,25 +89,29 @@ function initGame() {
     });
 }
 
-// Handle card click
+// عند النقر على كرت
 function flipCard() {
-    if (lockBoard) return; // Don't allow clicking if board is locked
-    if (this === firstCard) return; // Prevent double-clicking the same card
+    if (lockBoard) return;
+    if (this === firstCard) return;
+
+    // بدء الوقت مع أول حركة
+    if (!gameStarted) {
+        gameStarted = true;
+        startTimer();
+    }
 
     this.classList.add('flipped');
 
     if (!firstCard) {
-        // First click
         firstCard = this;
         return;
     }
 
-    // Second click
     secondCard = this;
     checkForMatch();
 }
 
-// Check if the two clicked cards match
+// التحقق من تطابق الكرتين
 function checkForMatch() {
     const isMatch = firstCard.dataset.name === secondCard.dataset.name;
 
@@ -82,34 +122,57 @@ function checkForMatch() {
     }
 }
 
-// If it's a match, remove click events and check for win
+// في حال المطابقة
 function disableCards() {
     firstCard.removeEventListener('click', flipCard);
     secondCard.removeEventListener('click', flipCard);
 
     matchedPairs++;
+    
     if (matchedPairs === themeItems.length) {
-        setTimeout(() => alert('Congratulations! You won! 🎉'), 500);
+        setTimeout(handleWin, 500);
     }
 
     resetBoard();
 }
 
-// If it's not a match, flip them back after a short delay
+// في حال عدم المطابقة
 function unflipCards() {
-    lockBoard = true; // Lock the board so user can't click other cards
+    lockBoard = true;
 
     setTimeout(() => {
-        firstCard.classList.remove('flipped');
-        secondCard.classList.remove('flipped');
+        if (firstCard) firstCard.classList.remove('flipped');
+        if (secondCard) secondCard.classList.remove('flipped');
         resetBoard();
-    }, 1000); // 1000 milliseconds = 1 second
+    }, 1000);
 }
 
-// Reset variables for the next turn
+// إرجاع المتغيرات لوضعها الطبيعي
 function resetBoard() {
     [firstCard, secondCard, lockBoard] = [null, null, false];
 }
 
-// Start the game when the page loads
+// عند الفوز وإنهاء اللعبة
+function handleWin() {
+    stopTimer();
+
+    let currentBest = localStorage.getItem('saffih_best_record');
+    let isNewRecord = false;
+
+    if (!currentBest || seconds < parseInt(currentBest)) {
+        localStorage.setItem('saffih_best_record', seconds);
+        isNewRecord = true;
+    }
+
+    let message = `Whoo! You finished the game in ${seconds} seconds!`;
+    if (isNewRecord) {
+        message += ` 🏆 (أفضل رقم قياسي جديد!)`;
+    }
+
+    if (winTimeText) winTimeText.innerText = message;
+    if (winModal) winModal.classList.remove('hidden');
+    loadBestRecord();
+}
+
+// تشغيل اللعبة عند فتح الصفحة
 initGame();
